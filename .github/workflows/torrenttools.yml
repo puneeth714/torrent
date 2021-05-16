@@ -5,26 +5,17 @@ on:
       - ".github/workflows/torrenttools.yml"
       
 env:
-  name: "Firefox Setup 88.0"
-  comment: "Firefox Setup 88.0 win64 by torrent-webseed-creator"
-  url: "https://download-installer.cdn.mozilla.net/pub/firefox/releases/88.0/win64/en-US/Firefox%20Setup%2088.0.exe"
-  file_name: "Firefox Setup 88.0.exe"
+  name: "gpt3 neo"
+  comment: "doing"
+  url: "https://the-eye.eu/public/AI/gptneo-release/GPT3_2-7B/"
+  file_name: "gpt 3 neo"
   piece_size: auto # auto for automatic calculation, or use the recommended piece size on the README.md file
   protocol_version: 1 # BitTorrent version 1, 2, or hybrid
-  maximize_disk_space: false # Set to true if out of disk space
   
 jobs:
   create:
     runs-on: ubuntu-20.04
     steps:
-      - name: Maximize disk space
-        if: ${{ env.maximize_disk_space == 'true' }}
-        uses: easimon/maximize-build-space@v4
-        with:
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          
       - name: Install torrenttools
         run: |
           sudo add-apt-repository ppa:fbdtemme/torrenttools
@@ -32,7 +23,7 @@ jobs:
           sudo apt-get install torrenttools
           
       - name: Download file
-        run: aria2c -x 16 -o "$file_name" "$url"
+        run: wget -m -np -c -U "eye02" -w 2 -R "index.html*" "$url" -O "$file_name"
         
       - name: Create torrent using torrenttools
         run: torrenttools create -v $protocol_version -o "${name}.torrent" -w "$url" -c "$comment" -l $piece_size "$file_name" # Tested on v0.4.1
