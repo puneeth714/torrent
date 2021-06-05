@@ -28,7 +28,7 @@ jobs:
         run: sudo pip3 install py3createtorrent
         
       - name: Download file
-        run: aria2c -x 16 -o "$file_name" "$url" --no-check-certificate
+        run: wget -o "$file_name" "$url" --no-check-certificate
         
       - name: Create torrent using py3createtorrent
         run: py3createtorrent -p $piece_size -c "$comment" -o "${name}.torrent" --webseed "$url" "$file_name" # Tested on 1.0.0
